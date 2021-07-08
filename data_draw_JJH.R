@@ -24,7 +24,7 @@ final <- rbind(complete2019,complete2020,complete2021)
 library(tidyverse)
 
 complete2019 %>% 
-  filter(city2 == "¼­¿ïÆ¯º°½Ã" & time == "ÇÕ°è" & vector == "¹ß»ı·®" & type == "ÀÏ¹İÀÎ") %>%
+  filter(city2 == "????Æ¯????" & time == "?Õ°?" & vector == "?ß»???" & type == "?Ï¹???") %>%
   ggplot(aes(x = `Week_Number`, y = `Move`, group = type, colour = type)) +
   geom_line()+
   facet_wrap(~ city3) +
@@ -32,7 +32,7 @@ complete2019 %>%
   theme_jhp()
 
 complete2019 %>% 
-  filter(city2 == "¼­¿ïÆ¯º°½Ã" & time == "ÇÕ°è" & vector == "¹ß»ı·®" & type != "ÀÏ¹İÀÎ") %>%
+  filter(city2 == "????Æ¯????" & time == "?Õ°?" & vector == "?ß»???" & type != "?Ï¹???") %>%
   ggplot(aes(x = `Week_Number`, y = `Move`, group = type, colour = type)) +
   geom_line()+
   facet_wrap(~ city3) +
@@ -40,7 +40,7 @@ complete2019 %>%
   theme_jhp()
 
 complete2020 %>% 
-  filter(city2 == "¼­¿ïÆ¯º°½Ã" & time == "ÇÕ°è" & vector == "¹ß»ı·®" & type == "ÀÏ¹İÀÎ") %>%
+  filter(city2 == "????Æ¯????" & time == "?Õ°?" & vector == "?ß»???" & type == "?Ï¹???") %>%
   ggplot(aes(x = Week_Number, y = `Move`, group = type, colour = type)) +
   geom_line()+
   facet_wrap(~ city3) +
@@ -48,7 +48,7 @@ complete2020 %>%
   theme_jhp()
 
 complete2020 %>% 
-  filter(city2 == "¼­¿ïÆ¯º°½Ã" & time == "ÇÕ°è" & vector == "¹ß»ı·®" & type != "ÀÏ¹İÀÎ") %>%
+  filter(city2 == "????Æ¯????" & time == "?Õ°?" & vector == "?ß»???" & type != "?Ï¹???") %>%
   ggplot(aes(x = Week_Number, y = `Move`, group = type, colour = type)) +
   geom_line()+
   facet_wrap(~ city3) +
@@ -56,7 +56,7 @@ complete2020 %>%
   theme_jhp()
 
 complete2021 %>% 
-  filter(city2 == "¼­¿ïÆ¯º°½Ã" & time == "ÇÕ°è" & vector == "¹ß»ı·®" & Week_Number != 53 & type == "ÀÏ¹İÀÎ") %>%
+  filter(city2 == "????Æ¯????" & time == "?Õ°?" & vector == "?ß»???" & Week_Number != 53 & type == "?Ï¹???") %>%
   ggplot(aes(x = Week_Number, y = `Move`, group = type, colour = type)) +
   geom_line()+
   facet_wrap(~ city3) +
@@ -64,9 +64,15 @@ complete2021 %>%
   theme_jhp()
 
 complete2021 %>% 
-  filter(city2 == "¼­¿ïÆ¯º°½Ã" & time == "ÇÕ°è" & vector == "¹ß»ı·®" & Week_Number != 53 & type != "ÀÏ¹İÀÎ") %>%
+  filter(city2 == "????Æ¯????" & time == "?Õ°?" & vector == "?ß»???" & Week_Number != 53 & type != "?Ï¹???") %>%
   ggplot(aes(x = Week_Number, y = `Move`, group = type, colour = type)) +
   geom_line()+
   facet_wrap(~ city3) +
   labs(title = "2021") +
   theme_jhp()
+
+temp1 <- complete2019 %>% filter(type == "ì¼ë°˜ì¸" & city2 == "ì„œìš¸íŠ¹ë³„ì‹œ")
+temp2 <- complete2020 %>% filter(type == "ì¼ë°˜ì¸" & city2 == "ì„œìš¸íŠ¹ë³„ì‹œ")
+
+
+

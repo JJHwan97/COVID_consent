@@ -44,8 +44,8 @@ final2021.merge <- final2021 %>% filter(type != "합계" & type != "~") %>%
   group_by(city2, Week_Number) %>%
   summarize(value2021 = sum(value))
 
-yearbind <- left_join(final2019.merge, final2020.merge)
-yearbind <- left_join(yearbind, final2021.merge)
+yearbind <- full_join(final2019.merge, final2020.merge)
+yearbind <- full_join(yearbind, final2021.merge)
 
 yearbind$com20.19 <- (yearbind$value2020 - yearbind$value2019)/yearbind$value2019
 yearbind$com21.19 <- (yearbind$value2021 - yearbind$value2019)/yearbind$value2019
@@ -57,6 +57,22 @@ for ( i in 2:8){
   yearbind[,i] <- yearbind[,i] %>% as.numeric()
   
 }
+
+temp1 <- yearbind[,c(1,2,6)]
+temp1[,4] <- 2020
+colnames(temp1)[3] <- "change"
+temp2 <- yearbind[,c(1,2,7)]
+temp2[,4] <- 2021
+colnames(temp2)[3] <- "change"
+
+yearbind.merge <- rbind(temp1, temp2)
+colnames(yearbind.merge)[4]<-"Year"
+yearbind.merge[,4]<- yearbind.merge[,4] %>% as.character()
+
+yearbind.merge <- left_join(yearbind.merge, covid.korea.merge)
+yearbind.merge <- left_join(yearbind.merge, world)
+yearbind.merge <- left_join(yearbind.merge, asia)
+yearbind.merge <- left_join(yearbind.merge, usa)
 
 yearbind %>% 
   filter(city2 == "경기도" | city2 == "부산광역시" | city2 == "서울특별시") %>%

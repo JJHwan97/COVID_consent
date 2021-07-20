@@ -1,4 +1,6 @@
 library(openxlsx)
+library(dplyr)
+library(tidyr)
 
 setwd("C:\\Users\\joshu\\Desktop\\move\\read\\temp2")
 
@@ -8,7 +10,7 @@ file_list <- list.files(path="C:\\Users\\joshu\\Desktop\\move\\read\\temp")
 
 for (i in 1:length(file_list)){
   data <- read.xlsx(xlsxFile = file_list[i], fillMergedCells = TRUE, colNames = FALSE)
-#data <- read.xlsx(xlsxFile = "C:\\Users\\joshu\\Desktop\\move\\ÀÌ¿ë·® ÁöÇ¥(¸ñÀûÅëÇà·®)_20210622 - 2021-06-22T192125.768.xlsx", fillMergedCells = TRUE, colNames = FALSE)
+#data <- read.xlsx(xlsxFile = "C:\\Users\\joshu\\Desktop\\move\\?Ì¿ë·® ??Ç¥(???????à·®)_20210622 - 2021-06-22T192125.768.xlsx", fillMergedCells = TRUE, colNames = FALSE)
   data <- data %>% as.matrix()
   
   name <- c()
@@ -24,7 +26,7 @@ for (i in 1:length(file_list)){
     }
   }
   
-  name <- c("½ÃµµÄÚµå","½Ãµµ","½Ã±º±¸","ÀÏ","ÀÌ¿ëÀÚÀ¯Çü",name[6:55])
+  name <- c("?Ãµ??Úµ?","?Ãµ?","?Ã±???","??","?Ì¿???ï¿½ï¿½??",name[6:55])
   
   data <- data %>% as.data.frame()
   
@@ -33,7 +35,7 @@ for (i in 1:length(file_list)){
   data <- data[-(1:2),]
   
   new <- pivot_longer(data=data,
-               cols=`ÇÕ°è . ¹ß»ý·®`:`03 . µµÂø·®`,
+               cols=`?Õ°? . ?ß»???`:`03 . ??????`,
                names_to=c("name","name1"),
                names_sep ='\\.')
   
@@ -47,9 +49,7 @@ for (i in 1:length(file_list)){
   assign(paste0("clean",".",day),new)
   
   write.csv(get(paste0("clean",".",day)),paste0("C:\\Users\\joshu\\Desktop\\move\\forpython\\","clean",".",day,".csv"))
-}
-
-df_list <- mget(ls(pattern = "^clean.2019*"))
+f_list <- mget(ls(pattern = "^clean.2019*"))
 
 final.2019 <- dplyr::bind_rows(df_list)
 

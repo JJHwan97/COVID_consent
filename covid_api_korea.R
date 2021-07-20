@@ -1,4 +1,4 @@
-install.packages("httr") # HTTP ºÒ·¯¿À±â
+install.packages("httr") # HTTP ?Ò·??ï¿½ï¿½?
 
 library(dplyr)
 library(httr)
@@ -8,9 +8,9 @@ library(jsonlite)
 dir <- "C:\\Users\\joshu\\Desktop\\move"
 
 #give date
-today <- 20210704
+today <- 20210720
 
-url <-   paste0("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19SidoInfStateJson?",
+url <- paste0("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19SidoInfStateJson?",
                 "ServiceKey=","31W2Fodij75E8QVYmLZp9QDERO1%2FqJIvrIvdRTl495GjN%2BdLYbl9ELUTM1xGXkoPyAX21BjQ0%2BqccGi%2BKuSaAg%3D%3D",
                 "&pageNo=1&numOfRows=10&startCreateDt=20190101&endCreateDt=",
                 today)
@@ -40,7 +40,7 @@ covid.korea$weeknum <-  format(covid.korea$day, format = "%V")
 
 covid.korea$dayofweek <- weekdays(as.Date(covid.korea$day))
 
-covid.korea.sundays <- covid.korea %>% filter(dayofweek == "ÀÏ¿äÀÏ")
+covid.korea.sundays <- covid.korea %>% filter(dayofweek == "ì¼ìš”ì¼")
 
 # covid.korea[covid.korea$items.item.qurRate == "-","items.item.qurRate"] <- "."
 # 
@@ -48,17 +48,17 @@ covid.korea.sundays <- covid.korea %>% filter(dayofweek == "ÀÏ¿äÀÏ")
 # 
 # covid.korea$items.item.qurRate <- covid.korea$items.item.qurRate %>% as.numeric()
 # 
-# covid.korea.temp <- covid.korea %>% filter(items.item.gubun == "¼­¿ï")
+# covid.korea.temp <- covid.korea %>% filter(items.item.gubun == "????")
 
 # covid.korea.sum <- covid.korea %>% 
 #   dplyr::select(., -c(items.item.createDt, items.item.gubunCn, items.item.gubunEn, items.item.stdDay, items.item.updateDt,day, items.item.qurRate)) %>%
 #   group_by(items.item.gubun, weeknum, year) %>% summarise_all(list(sum), na.rm = TRUE)
 
+covid.korea.sundays[covid.korea.sundays$year == "2021" & covid.korea.sundays$weeknum == 53,20] <- "2020"
+
 covid19_2020 <- covid.korea.sundays[covid.korea.sundays$year == "2020",]
 
 covid19_2021 <- covid.korea.sundays[covid.korea.sundays$year == "2021",]
-
-covid19_2021 <- covid19_2021 %>% filter(weeknum != 53)
 
 covid19_2020$weeknum <- covid19_2020$weeknum %>% as.numeric()
 covid19_2021$weeknum <- covid19_2021$weeknum %>% as.numeric()
@@ -68,7 +68,7 @@ covid19_2021$weeknum <- covid19_2021$weeknum + 53
 covid.korea.final <- rbind(covid19_2020, covid19_2021)
 
 covid.korea.final %>% 
-  filter(items.item.gubun != "ÇÕ°è") %>%
+  filter(items.item.gubun != "ì„œìš¸") %>%
   ggplot(aes(x = `weeknum`, y = `items.item.deathCnt`)) +
   geom_point()+
   facet_wrap(~ items.item.gubun) +
@@ -85,9 +85,19 @@ covid.korea.final<- covid.korea.final %>%
 covid.korea.final$increase <- covid.korea.final$items.item.deathCnt - covid.korea.final$l.items.item.deathCnt
 
 covid.korea.final %>% 
-  filter(items.item.gubun != "ÇÕ°è") %>%
+  filter(items.item.gubun != "í•©ê³„") %>%
   ggplot(aes(x = `weeknum`, y = `increase`)) +
   geom_line()+
   facet_wrap(~ items.item.gubun) +
   # labs(title = "2019") +
   theme_jhp()
+
+covid.korea.merge <- covid.korea.final[,c("items.item.gubun", "year", "weeknum", "increase")]
+covid.korea.merge <- covid.korea.merge %>% as.data.frame()
+
+colnames(covid.korea.merge)[1]<-"city2"
+colnames(covid.korea.merge)[2]<-"Year"
+colnames(covid.korea.merge)[3]<-"Week_Number"
+colnames(covid.korea.merge)[4]<-"death"
+
+covid.korea.merge <- pivot_wider(covid.korea.merge, names_from = "city2", values_from = c(death))

@@ -92,12 +92,16 @@ covid.korea.final %>%
   # labs(title = "2019") +
   theme_jhp()
 
-covid.korea.merge <- covid.korea.final[,c("items.item.gubun", "year", "weeknum", "increase")]
-covid.korea.merge <- covid.korea.merge %>% as.data.frame()
+covid.korea.merge.death <- covid.korea.final[,c("items.item.gubun", "year", "weeknum", "increase")]
+covid.korea.merge.death <- covid.korea.merge.death %>% as.data.frame()
 
-colnames(covid.korea.merge)[1]<-"city2"
-colnames(covid.korea.merge)[2]<-"Year"
-colnames(covid.korea.merge)[3]<-"Week_Number"
-colnames(covid.korea.merge)[4]<-"death"
+colnames(covid.korea.merge.death)[1]<-"city2"
+colnames(covid.korea.merge.death)[2]<-"Year"
+colnames(covid.korea.merge.death)[3]<-"Week_Number"
+colnames(covid.korea.merge.death)[4]<-"death"
+
+covid.korea.merge.death.total <- covid.korea.merge.death %>% dplyr::filter(city2 == "합계")
+colnames(covid.korea.merge.death.total)[4]<-"deathtotal"
+covid.korea.merge.death.total <- covid.korea.merge.death.total[,2:4]
 
 covid.korea.merge <- pivot_wider(covid.korea.merge, names_from = "city2", values_from = c(death))

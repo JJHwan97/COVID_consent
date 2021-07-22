@@ -13,9 +13,9 @@ covid19.foriegn.summarize <- dplyr::select(covid19.foriegn, -c(iso_code, date, c
 covid19.foriegn.summarize[covid19.foriegn.summarize$weeknum == 53 & covid19.foriegn.summarize$year == 2021,57] <- "2020"
 
 covid19.foriegn.summarize.sum <- covid19.foriegn.summarize %>% 
-  dplyr::select(location, weeknum, year,new_cases) %>%
+  dplyr::select(location, weeknum, year,new_deaths_per_million) %>%
   group_by(location, weeknum, year) %>% 
-  summarise(new_cases = sum(new_cases), na.rm = TRUE)
+  summarise(new_cases = sum(new_deaths_per_million), na.rm = TRUE)
 
 temp.name <- covid19.foriegn[,c("iso_code", "continent","location")] %>% unique()
 

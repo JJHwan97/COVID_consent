@@ -1,4 +1,4 @@
-install.packages("httr") # HTTP ?ҷ??��?
+#install.packages("httr")
 
 library(dplyr)
 library(httr)
@@ -24,7 +24,7 @@ dplyr::glimpse(data.df.lite)
 
 covid.korea <- data.df.lite$response$body %>% as.data.frame()
 
-write.csv(covid.korea, paste0(dir, "\\", today, "covidkorea",".csv"))
+# write.csv(covid.korea, paste0(dir, "\\", today, "covidkorea",".csv"))
 
 date <- covid.korea[,1]
 
@@ -104,4 +104,4 @@ covid.korea.merge.death.total <- covid.korea.merge.death %>% dplyr::filter(city2
 colnames(covid.korea.merge.death.total)[4]<-"deathtotal"
 covid.korea.merge.death.total <- covid.korea.merge.death.total[,2:4]
 
-covid.korea.merge <- pivot_wider(covid.korea.merge, names_from = "city2", values_from = c(death))
+# covid.korea.merge <- pivot_wider(covid.korea.merge, names_from = "city2", values_from = c(death))

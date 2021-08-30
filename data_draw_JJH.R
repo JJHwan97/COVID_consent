@@ -1,3 +1,5 @@
+#run global_move_JJH and covid_api_korea first
+
 library(readr)
 # 
 # complete2019 <- read_csv("C:/Users/joshu/Desktop/move/complete2019.csv", 
@@ -96,17 +98,17 @@ yearbind.merge[yearbind.merge$city2 == "충청북도",1] <- "충북"
 
 yearbind.merge <- left_join(yearbind.merge, covid.korea.merge.death)
 
-yearbind.merge <- left_join(yearbind.merge, covid.korea.merge.cases)
+# yearbind.merge <- left_join(yearbind.merge, covid.korea.merge.cases)
 
 yearbind.merge[is.na(yearbind.merge)] <- 0 
 
-policychange <- read_excel("C:/Users/joshu/Desktop/policychange.xlsx", sheet = "Sheet3")
+policychange <- read_excel("E:/datafile/covid_consent/policychange.xlsx", sheet = "Sheet3")
 
 policychange <- pivot_longer(policychange, !Week_Number, names_to = "city2", values_to = "policy")
 
 yearbind.merge <- left_join(yearbind.merge, policychange)
 
-yearbind.merge <- left_join(yearbind.merge, covid.korea.merge.cases.total)
+# yearbind.merge <- left_join(yearbind.merge, covid.korea.merge.cases.total)
 
 yearbind.merge <- left_join(yearbind.merge, covid.korea.merge.death.total)
 
@@ -115,12 +117,12 @@ yearbind.merge_2021 <- yearbind.merge %>% filter(Year == "2021")
 
 yearbind.merge_2020$month <- as.Date(paste(2020, yearbind.merge_2020$Week_Number, 1, sep="-"), "%Y-%U-%u") %>%
   lubridate::month()
-yearbind.merge_2021$month <- as.Date(paste(2021, yearbind.merge_2021$Week_Number, 1, sep="-"), "%Y-%U-%u") %>%
+yearbind.merge_2021$month <- as.Date(paste(2021, yearbind.merge_2021$Week_Number -53, 1, sep="-"), "%Y-%U-%u") %>%
   lubridate::month()
 
 yearbind.merge<-rbind(yearbind.merge_2020,yearbind.merge_2021)
 
-data <- read_excel("C:/Users/joshu/Desktop/dataset_pop_political_rev.xlsx")
+data <- read_excel("E:/datafile/covid_consent/dataset_pop_political_rev.xlsx")
 data <- data %>% as.data.frame()
 data[,3] <- data[,3] %>% as.Date(format = "YYYY-mm-dd")
 data$month <- data[,3] %>% lubridate::month()
@@ -141,7 +143,14 @@ data$Year <- data$Year %>% as.character()
 
 yearbind.merge <- left_join(yearbind.merge, data)
 
-write.csv(yearbind.merge, "withpolicy.csv")
+colnames(yearbind.merge) <- c("city", "week", "dv", "year", "world_death", "asia_death", "usa_death", "city_death", "policy", "korea_death", "month", "drop1", "drop2",
+                          "party_cityleader", "total_seat", "dem_seat", "con_seat", "dem_percent", "con_percent", "basic_total", "basic_dem", "basic_con",
+                          "pop", "under10", "under20", "under30", "under40", "under50", "under60", "under70",
+                          "under80", "under90", "under100", "over100")
+
+final_save <- yearbind.merge %>% dplyr::select(-c(drop1, drop2))
+
+write.csv(final_save, "withpolicy_0830.csv")
 
 yearbind %>% 
   filter(city2 == "경기도" | city2 == "부산광역시" | city2 == "서울특별시") %>%
